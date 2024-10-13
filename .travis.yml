@@ -20,6 +20,14 @@ after_success:
   - docker build -t kevmonstah/multi-server -f ./server
   - docker build -t kevmonstah/multi-worker -f ./worker
   
+  #log into docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  #push
+  - docker kevmonstah/multi-client
+  - docker kevmonstah/multi-nginx
+  - docker kevmonstah/multi-server
+  - docker kevmonstah/multi-worker
+  
 # use your instructions to auto deploy here
 deploy:
 
