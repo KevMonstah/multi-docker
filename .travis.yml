@@ -15,10 +15,10 @@ script:
   - docker run -e CI=true kevmonstah/react-tester npm run test
 
 after_success:
-  - docker build -t kevmonstah/multi-client -f ./client
-  - docker build -t kevmonstah/multi-nginx -f ./nginx
-  - docker build -t kevmonstah/multi-server -f ./server
-  - docker build -t kevmonstah/multi-worker -f ./worker
+  - docker build -t kevmonstah/multi-client ./client
+  - docker build -t kevmonstah/multi-nginx ./nginx
+  - docker build -t kevmonstah/multi-server ./server
+  - docker build -t kevmonstah/multi-worker ./worker
   
   #log into docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
