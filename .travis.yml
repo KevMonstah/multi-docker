@@ -23,10 +23,10 @@ after_success:
   #log into docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   #push
-  - docker kevmonstah/multi-client
-  - docker kevmonstah/multi-nginx
-  - docker kevmonstah/multi-server
-  - docker kevmonstah/multi-worker
+  - docker push kevmonstah/multi-client
+  - docker push kevmonstah/multi-nginx
+  - docker push kevmonstah/multi-server
+  - docker push kevmonstah/multi-worker
   
 # use your instructions to auto deploy here
 deploy:
