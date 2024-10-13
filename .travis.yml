@@ -1,0 +1,38 @@
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  # COULD NAME the tag anything you want, it only used here.
+  - docker build -t kevmonstah/react-tester -f ./client/Dockerfile.dev ./client
+
+# stuff to run suite.  travis assumes that this exits just fine.
+# hmm. npm run tests waits for you to do more input, never exiting.
+# travis will not figure this out.
+# this updated with the -e CI=true instead of npm run test -- --coverage
+script:
+  - docker run -e CI=true kevmonstah/react-tester npm run test
+
+after_success:
+  - docker build -t kevmonstah/multi-client -f ./client
+  - docker build -t kevmonstah/multi-nginx -f ./nginx
+  - docker build -t kevmonstah/multi-server -f ./server
+  - docker build -t kevmonstah/multi-worker -f ./worker
+  
+# use your instructions to auto deploy here
+deploy:
+
+    provider: elasticbeanstalk
+    region: "us-west-2"
+    app: "frontend"
+    env: "Frontend-env"
+    bucket_name: "elasticbeanstalk-us-west-2-443370716768"
+    bucket_path: "frontend"  # by default, it's the same as 'app'
+    on:
+      branch: main  #only deploy when changes on main branch.
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: "$AWS_SECRET_KEY"
+
+
+# http://frontend-env.eba-b4tugse3.us-west-2.elasticbeanstalk.com/
